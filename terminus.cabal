@@ -1,0 +1,65 @@
+name:                  terminus
+version:               0.0.1
+license:               BSD3
+author:                Tim McGilchrist <timmcgil@gmail.com>
+maintainer:            Tim McGilchrist <timmcgil@gmail.com>
+copyright:             (c) 2016 Tim McGilchrist
+synopsis:              terminus
+category:              System
+cabal-version:         >= 1.8
+build-type:            Custom
+description:           Terminus
+
+library
+  build-depends:
+                       base                            >= 3          && < 5
+                     , protolude
+                     , containers
+                     , http-types
+                     , http-media
+                     , airship
+                     , text
+
+  ghc-options:         -Wall
+
+  hs-source-dirs:
+                       src
+
+
+  exposed-modules:
+                       Terminus
+
+executable terminus
+  ghc-options:
+                    -Wall -threaded -O2
+
+  hs-source-dirs:
+                    gen                    
+
+  main-is:
+                    ../main/terminus.hs
+
+  build-depends:
+                      base
+                    , terminus
+                    , text
+                    , warp
+                    , wai
+                    , wai-extra
+                    , airship
+                    , time
+
+test-suite test
+  type:                exitcode-stdio-1.0
+
+  main-is:             test.hs
+
+  ghc-options:         -Wall -threaded -O2
+
+  hs-source-dirs:
+                       test
+
+  build-depends:
+                       base                            >= 3          && < 5
+                     , terminus
+                     , hedgehog                        >= 0.5
