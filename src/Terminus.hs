@@ -3,6 +3,8 @@
 module Terminus (
     routes
   , errors
+  , healthResource
+  , wordResource
   ) where
 
 import           Airship

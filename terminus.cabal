@@ -48,6 +48,7 @@ executable terminus
                     , wai-extra
                     , airship
                     , time
+                    , http-client
 
 test-suite test
   type:                exitcode-stdio-1.0
