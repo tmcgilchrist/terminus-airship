@@ -8,7 +8,7 @@ import           Control.Monad.IO.Class (MonadIO(..))
 import qualified Data.ByteString.Lazy as BSL
 import           Hedgehog
 import           Network.HTTP.Types
-import           Network.Wai
+import           Network.Wai (Application)
 import qualified Network.Wai.Test as WT
 import           Prelude
 import           Terminus (healthResource, errors)
@@ -23,11 +23,12 @@ testRoute = do
   "health" #> healthResource
 
 prop_endpoint_create :: Property
-prop_endpoint_create = property $ do
-  let req = defaultRequest {
+prop_endpoint_create = withTests 1 . property $ do
+  let req = WT.defaultRequest {
           requestMethod = methodGet
-        , pathInfo = ["tweets"]
-        , requestHeaders = [(hContentType, "application/json")]}
+        , pathInfo = ["health"]
+        , 
+        }
 
   let app = resourceToWai defaultAirshipConfig testRoute errors
   r <- liftIO $ makeRequest app req
