@@ -27,7 +27,6 @@ prop_endpoint_create = withTests 1 . property $ do
   let req = WT.defaultRequest {
           requestMethod = methodGet
         , pathInfo = ["health"]
-        , 
         }
 
   let app = resourceToWai defaultAirshipConfig testRoute errors
