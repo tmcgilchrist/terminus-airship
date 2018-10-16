@@ -64,3 +64,11 @@ test-suite test
                        base                            >= 3          && < 5
                      , terminus
                      , hedgehog                        >= 0.5
+                     , airship
+                     , bytestring
+                     , wai
+                     , wai-extra
+                     , warp
+                     , http-client
+                     , http-types
+                     , async

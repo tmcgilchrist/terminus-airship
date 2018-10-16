@@ -4,17 +4,13 @@
 module Test.IO.Terminus.Other where
 
 import           Airship
-import           Airship.Resource.Static
 import           Control.Monad.IO.Class (MonadIO(..))
 import qualified Data.ByteString.Lazy as BSL
 import           Hedgehog
-import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
 import           Network.HTTP.Types
 import           Network.Wai
 import qualified Network.Wai.Test as WT
 import           Prelude
-import           System.IO
 import           Terminus (healthResource, errors)
 
 makeRequest :: Application -> Request -> IO WT.SResponse

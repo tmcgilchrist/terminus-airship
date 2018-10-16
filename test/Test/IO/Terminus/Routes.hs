@@ -3,24 +3,19 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Test.IO.Terminus.Routes where
 
-import           Airship (RoutingSpec, resourceToWai, defaultAirshipConfig, (#>), star)
-import           Control.Concurrent.Async (async, wait, cancel)
+import           Airship (RoutingSpec, resourceToWai, defaultAirshipConfig, (#>))
+import           Control.Concurrent.Async (async)
 import           Control.Monad.IO.Class (MonadIO(..))
-import qualified Data.ByteString.Lazy as BSL
 import           Hedgehog
-import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
-import           Network.HTTP.Types (methodGet, status200)
-import           Network.Wai (Application)
+import           Network.HTTP.Types (status200)
 import           Network.Wai.Handler.Warp (defaultSettings,
                                            runSettings, setHost,
                                             setPort)
-import           Data.Semigroup ((<>))
-import qualified Network.Wai.Test as WT
 import           Prelude
 import           Terminus (healthResource, errors)
 
-import           Network.HTTP.Client
+import           Network.HTTP.Client (managerSetProxy, newManager, httpLbs
+                                     , responseStatus, defaultManagerSettings, proxyEnvironment)
 
 testRoute :: RoutingSpec IO ()
 testRoute = do
@@ -35,12 +30,12 @@ prop_endpoint_create = withTests 1 . property $ do
       settings = setPort port (setHost host defaultSettings)
 
   let app = resourceToWai defaultAirshipConfig testRoute errors
-  a <- liftIO . async $ runSettings settings app
+  _ <- liftIO . async $ runSettings settings app
 
-  let settings = managerSetProxy
+  let settings' = managerSetProxy
             (proxyEnvironment Nothing)
             defaultManagerSettings
-  man <- liftIO $ newManager settings
+  man <- liftIO $ newManager settings'
 
   r <- liftIO $ httpLbs req man
   responseStatus r === status200
